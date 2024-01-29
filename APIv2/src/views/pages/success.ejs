@@ -37,13 +37,20 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <div class="container">
+                        <div class="container d-flex">
                             <div class="col-8">
                                 <%= data.apiKey %>
                             </div>
+                            <div class="col">
+                                <form action="/updateUserKey" method="post">
+                                    <input type="hidden" value="<%= user.id %>" name="userAuthId">
+                                    <button type="submit" class="btn btn-primary">Refrescar Key</button>
+                                </form>
+                            </div>
                         </div>
-
                     </li>
+
+
                     <li class="list-group-item">
                         <div class="container d-flex">
                             <div class="col-8">
@@ -55,10 +62,8 @@
                                     <input type="hidden" value="<%= data.level %>" name="level">
                                     <button type="submit" class="btn btn-primary">Actualizar Level</button>
                                 </form>
-
                             </div>
                         </div>
-
                     </li>
                 </ul>
             </div>

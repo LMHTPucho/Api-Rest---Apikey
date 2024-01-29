@@ -3,7 +3,9 @@ import express from 'express';
 import passport from 'passport';
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 import { nanoid } from 'nanoid'
-import { AddUser, DeleteUser, GetUserByAuth, GetUsers, UpdateUser, UpdateUserLevel} from '../controller/user.js';
+import { AddUser, DeleteUser, GetUserByAuth, GetUsers, GetUserByKey, UpdateUser, UpdateUserLevel, UpdateUserKey} from '../controller/user.js';
+import { GetPokemons, GetPokemon, GetPokemonByType } from '../controller/pokemon.js';
+import { GetAtacks} from '../controller/atacks.js';
 
 const router = express.Router();
 let userProfile;
@@ -15,7 +17,7 @@ router.get('/', (req, res) => {
 router.get('/success', async (req, res) => {
     let userData = await GetUserByAuth(userProfile);
     if(!userData){
-        const apiKey = nanoid(10);
+        let apiKey = nanoid(10);
         const userAuthId = userProfile.id;
         const level = false;
         userData = await AddUser({userAuthId, apiKey, level});
@@ -63,15 +65,41 @@ router.put('/updateUser', UpdateUser);
 router.post('/updateUserLevel', async (req, res) => {
     let changes = await UpdateUserLevel(req)
     let userData = await GetUserByAuth(userProfile)
-    res.json(userData)
-    // res.render('pages/success', {user: userProfile, data: userData});
+    res.redirect("/success")
+});
+
+router.post('/updateUserKey', async (req, res) => {
+    let apiKey = nanoid(10)
+    let changes = await UpdateUserKey({req, apiKey})
+    let userData = await GetUserByAuth(userProfile)
+    res.redirect("/success")
 }); 
 
 router.delete('/deleteUser', DeleteUser);
 
 router.get('/getUserByAuth', GetUserByAuth);
 
+router.get('/getPokemons', GetPokemons);
 
+router.get('/api/:apiKey/:function/:subfunction/:param1', async (req, res) => {
+    console.log(req.params.apiKey)
+    let user = await GetUserByKey(req.params.apiKey)
+    
+    if (user != null){
+        if(req.params.subfunction == "pokedex"){
+            let pokemon = await GetPokemon(req.params.param1);
+            res.json(pokemon)
+        } else if (req.params.subfunction == "type"){
+            let pokemons = await GetPokemonByType(req.params.param1);
+            res.json(pokemons)
+        } else {
+            res.json("No existe esa función")
+        }
+    } else {
+        res.json("ApiKey no valida");
+    }
+    
+}); 
 
 
 export default router;

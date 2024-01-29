@@ -10,9 +10,6 @@ export const GetUsers = async (req, res) => {
 }
 
 export const AddUser = async (req, res) => {
-    console.log("****************");
-    console.log(req);
-    console.log("****************");
     const {userAuthId, apiKey, level} = req
     try{
         const user = await User.create({
@@ -28,7 +25,6 @@ export const AddUser = async (req, res) => {
 
 export const UpdateUser = async (req, res) => {
     const {userAuthId, apiKey, level} = req.body
-    console.log(req.body);
     try {
         const user = await User.update({
             apiKey,
@@ -43,12 +39,12 @@ export const UpdateUser = async (req, res) => {
 }
 
 export const UpdateUserLevel = async (req, res) => {
-    const {userAuthId,level} = req.body
-    console.log(userAuthId,level);
-
+    var userAuthId = req.body.userAuthId
+    var level = req.body.level
+    level = (level !== "true");
     try {
         const user = await User.update({
-            level: !(level)
+            level: level
         },{
             where: {userAuthId : userAuthId}
         });
@@ -57,14 +53,15 @@ export const UpdateUserLevel = async (req, res) => {
     }
 }
 
-export const DeleteUser = async (req, res) => {
-    const {userAuthId} = req.body
-    console.log(req.body);
+export const UpdateUserKey = async (req, res) => {
+    var userAuthId = req.req.body.userAuthId
+    var apiKey = req.apiKey
     try {
-        const user = await User.destroy({
-            where: {userAuthId }
+        const user = await User.update({
+            apiKey: apiKey
+        },{
+            where: {userAuthId : userAuthId}
         });
-        res.json(user);
     } catch (error){
         console.log(error);
     }
@@ -72,13 +69,36 @@ export const DeleteUser = async (req, res) => {
 
 export const GetUserByAuth = async (req, res) => {
     const userAuthId = req.id
-    console.log(userAuthId);
     try {
         const user = await User.findOne({
             where: {userAuthId}
         });
 
         return user;
+    } catch (error){
+        console.log(error);
+    }
+}
+
+export const GetUserByKey = async (req, res) => {
+    const apiKey = req
+    try {
+        const user = await User.findOne({
+            where: {apiKey}
+        });
+        return user
+    } catch (error){
+        console.log(error)
+    }
+}
+
+export const DeleteUser = async (req, res) => {
+    const {userAuthId} = req.body
+    try {
+        const user = await User.destroy({
+            where: {userAuthId }
+        });
+        res.json(user);
     } catch (error){
         console.log(error);
     }
