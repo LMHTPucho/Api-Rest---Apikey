@@ -26,6 +26,10 @@ router.get('/success', async (req, res) => {
     res.render('pages/success', { user: userProfile, data: userData });
 });
 
+router.get('/doc', (req, res) => {
+    res.render('pages/doc');
+});
+
 passport.use(new GoogleStrategy({
     clientID: '416624799089-epipe5ev08g3q3314t3biqflakqlg3kh.apps.googleusercontent.com',
     clientSecret: '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',
