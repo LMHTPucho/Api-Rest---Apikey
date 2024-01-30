@@ -1,9 +1,11 @@
 import { Sequelize } from "sequelize";
 import db from "../config/database.js";
 
-const {DataTypes} = Sequelize;
+// Destructuring DataTypes from Sequelize
+const { DataTypes } = Sequelize;
 
-const Pokemon = db.define( 'pokemon', {
+// Define the Pokemon model with attributes: NumPokedex, Nombre, and Tipo
+const Pokemon = db.define('pokemon', {
     NumPokedex: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -16,14 +18,18 @@ const Pokemon = db.define( 'pokemon', {
         type: DataTypes.STRING,
         allowNull: false
     }
-},{
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
+}, {
+    // Additional model configurations
+    freezeTableName: true,   // Prevents pluralization of the table name
+    timestamps: false,       // Disables createdAt and updatedAt fields
+    createdAt: false,        // Disables createdAt field
+    updatedAt: false         // Disables updatedAt field
 });
+
+// Immediately synchronize the model with the database
 (async () => {
     await db.sync();
 })();
 
-export default Pokemon
+// Export the Pokemon model
+export default Pokemon;

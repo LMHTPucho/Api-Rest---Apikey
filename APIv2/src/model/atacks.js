@@ -1,9 +1,11 @@
 import { Sequelize } from "sequelize";
 import db from "../config/database.js";
 
-const {DataTypes} = Sequelize;
+// Destructuring DataTypes from Sequelize
+const { DataTypes } = Sequelize;
 
-const Atack = db.define( 'ataque', {
+// Define the Atack model with attributes: Nombre and Tipo
+const Atack = db.define('ataque', {
     Nombre: {
         type: DataTypes.STRING,
         allowNull: false
@@ -12,14 +14,18 @@ const Atack = db.define( 'ataque', {
         type: DataTypes.STRING,
         allowNull: false
     }
-},{
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
+}, {
+    // Additional model configurations
+    freezeTableName: true,   // Prevents pluralization of the table name
+    timestamps: false,       // Disables createdAt and updatedAt fields
+    createdAt: false,        // Disables createdAt field
+    updatedAt: false         // Disables updatedAt field
 });
+
+// Immediately synchronize the model with the database
 (async () => {
     await db.sync();
 })();
 
-export default Atack
+// Export the Atack model
+export default Atack;

@@ -13,12 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
 
-
-//Info de resultados
-//Responsabilidad
-//Integración
-
-// Configuraciones
+// Configurations
 app.set('port', process.env.PORT || 3000);
 app.set('json spaces', 2);
 app.set('views', path.join(__dirname, 'views'));
@@ -31,14 +26,15 @@ app.use(session({
 }));
 
 // Middleware
-app.use(morgan('dev'));
+app.use(morgan('dev')); // Morgan for logging HTTP requests
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Inicializando Passport
+// Initializing Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Passport serialization and deserialization
 passport.serializeUser(function (user, cb) {
     cb(null, user);
 });
@@ -47,10 +43,10 @@ passport.deserializeUser(function (obj, cb) {
     cb(null, obj);
 });
 
-// Rutas de autenticación de Google enlazadas desde indexRoutes.js
-app.use('/', routes); // Cambio aquí
+// Routes for Google authentication linked from routes.js
+app.use('/', routes); // Routing for authentication
 
-// Iniciando el servidor
+// Starting the server
 app.listen(app.get('port'), () => {
     console.log(`Server listening on port ${app.get('port')}`);
 });

@@ -10,10 +10,12 @@ import { GetAtack, GetAtackByName, GetAtacks, GetAttacksByType } from '../contro
 const router = express.Router();
 let userProfile;
 
+// Route to render the authentication page
 router.get('/', (req, res) => {
     res.render('pages/auth');
 });
 
+// Route to handle successful authentication
 router.get('/success', async (req, res) => {
     let userData = await GetUserByAuth(userProfile);
     if (!userData) {
@@ -26,10 +28,12 @@ router.get('/success', async (req, res) => {
     res.render('pages/success', { user: userProfile, data: userData });
 });
 
+// Route to render the documentation page
 router.get('/doc', (req, res) => {
     res.render('pages/doc');
 });
 
+// Passport configuration for Google OAuth2 authentication
 passport.use(new GoogleStrategy({
     clientID: '416624799089-epipe5ev08g3q3314t3biqflakqlg3kh.apps.googleusercontent.com',
     clientSecret: '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',
@@ -44,34 +48,33 @@ passport.use(new GoogleStrategy({
     }
 }));
 
-// Ruta para iniciar el proceso de autenticación con Google
+// Route to initiate the Google authentication process
 router.get('/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-// Ruta para manejar la respuesta de Google después de la autenticación
+// Route to handle the Google authentication response
 router.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     (req, res) => {
-        // Aquí puedes redirigir al usuario a una página de éxito u otra acción
+        // Redirect the user to a success page or perform another action
         res.redirect('/success');
     }
 );
 
+// Routes for user-related operations
 router.post('/addUser', AddUser);
-
 router.get('/getUsers', GetUsers);
-
 router.put('/updateUser', UpdateUser);
 
-// router.post('/updateUserLevel', UpdateUserLevel);
-
+// Route to update user level with additional checks and redirection
 router.post('/updateUserLevel', async (req, res) => {
     let changes = await UpdateUserLevel(req)
     let userData = await GetUserByAuth(userProfile)
     res.redirect("/success")
 });
 
+// Route to update user key with additional checks and redirection
 router.post('/updateUserKey', async (req, res) => {
     let apiKey = nanoid(10)
     let changes = await UpdateUserKey({ req, apiKey })
@@ -80,11 +83,12 @@ router.post('/updateUserKey', async (req, res) => {
 });
 
 router.delete('/deleteUser', DeleteUser);
-
 router.get('/getUserByAuth', GetUserByAuth);
 
+// Routes for Pokemon-related operations
 router.get('/getPokemons', GetPokemons);
 
+// API route for handling various requests based on apiKey and function
 router.get('/api/:apiKey/:function/:subfunction/:param1', async (req, res) => {
     console.log(req.params.apiKey)
     let user = await GetUserByKey(req.params.apiKey)

@@ -1,9 +1,11 @@
 import { Sequelize } from "sequelize";
 import db from "../config/database.js";
 
-const {DataTypes} = Sequelize;
+// Destructuring DataTypes from Sequelize
+const { DataTypes } = Sequelize;
 
-const User = db.define( 'user', {
+// Define the User model with attributes: userAuthId, apiKey, and level
+const User = db.define('user', {
     userAuthId: {
         type: DataTypes.STRING,
         allowNull: false
@@ -16,14 +18,18 @@ const User = db.define( 'user', {
         type: DataTypes.BOOLEAN,
         allowNull: false
     }
-},{
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
+}, {
+    // Additional model configurations
+    freezeTableName: true,   // Prevents pluralization of the table name
+    timestamps: false,       // Disables createdAt and updatedAt fields
+    createdAt: false,        // Disables createdAt field
+    updatedAt: false         // Disables updatedAt field
 });
+
+// Immediately synchronize the model with the database
 (async () => {
     await db.sync();
 })();
 
-export default User
+// Export the User model
+export default User;
