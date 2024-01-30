@@ -1,40 +1,62 @@
-<!doctype html>
-<html>
-
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <title>Google SignIn</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <!-- load bootstrap css -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- load fontawesome -->
-    <style>
-        body {
-            padding-top: 70px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Documentación de API</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
 </head>
-
 <body>
-    <div class="container">
-        <div class="jumbotron">
-            <h1 class="text-primary  text-center"><span class="fa fa-user"></span> Documentación de la API</h1>
-            <div class="row">
-                <p>Esta es la página de documentación de la API</p>
-            </div>
-            <div class="row">
-                <p>Las funcionalidades de la api son las siguientes:</p>
-            </div>
-            <div class="row">
-                <p>-Ver los pokemon:</p>
-            </div>
-            <div class="row">
-                <p>-Ver los ataques:</p>
-            </div>
-        </div>
-        <div class="container">
-            
-        </div>
-    </div>
-</body>
 
+    <div class="container mt-5">
+        <h1 class="mb-4">Documentación de API de Pokemon</h1>
+
+        <section>
+            <h2>Descripción General</h2>
+            <p>Estas son las funcionalidades que posee la api básica de pokemon, la cual se compone de endpoints que muestran distintos pokemon según su número de pokedex o tipo.</p>
+            <p>También se pueden hacer peticiones para los ataques, según su nombre o tipo.</p>
+        </section>
+
+        <section>
+            <h2>Endpoints</h2>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">GET /api/{token}/pokemon/numPokedex</h3>
+                </div>
+                <div class="card-body">
+                    <p>Descripción del endpoint y su funcionalidad.</p>
+                    <h4>Parámetros</h4>
+                    <ul>
+                        <li><strong>pokedex:</strong> Búsqueda del pokemon mediante su número de la pokdex. (string)</li>
+                        <li><strong>numPokedex:</strong> El número de la pokedex del pokemon que queremos buscar. (int)</li>
+                    </ul>
+                    <h4>Ejemplo de solicitud</h4>
+                    <pre>
+                        <code>
+                            curl -X GET localhost:3000/api/{token}/pokemon/pokedex/10
+                        </code>
+                    </pre>
+                    <h4>Respuesta</h4>
+                    <pre>
+                        <code>
+                            {
+                                "id": 10,
+                                "NumPokedex": 10,
+                                "Nombre": "Caterpie",
+                                "Tipo": "Bicho"
+                              }
+                        </code>
+                    </pre>
+                </div>
+            </div>
+
+            <!-- Puedes agregar más ejemplos de endpoints aquí -->
+
+        </section>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
